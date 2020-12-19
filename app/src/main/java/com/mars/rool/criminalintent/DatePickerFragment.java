@@ -1,14 +1,16 @@
 package com.mars.rool.criminalintent;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
@@ -22,10 +24,8 @@ public class DatePickerFragment extends DialogFragment {
     private static final String ARG_DATE = "date";
 
     private DatePicker mDatePicker;
-    private Button mOkButton;
-    private Date mDate;
 
-    public static DatePickerFragment newInstance(Date date) {
+    static DatePickerFragment newInstance(Date date) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_DATE, date);
 
@@ -34,54 +34,19 @@ public class DatePickerFragment extends DialogFragment {
         return fragment;
     }
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mDate = new Date();
-        if (getArguments() != null && getArguments().getSerializable(ARG_DATE) != null)
-            mDate = (Date) getArguments().getSerializable(ARG_DATE);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(mDate);
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        View v = inflater.inflate(R.layout.dialog_date, container, false);
-
-        mDatePicker = v.findViewById(R.id.dialog_date_picker);
-        mDatePicker.init(year, month, day, null);
-
-        mOkButton = v.findViewById(R.id.dialog_date_ok_button);
-        mOkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int year = mDatePicker.getYear();
-                int month = mDatePicker.getMonth();
-                int day = mDatePicker.getDayOfMonth();
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(mDate);
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, day);
-
-                sendResult(Activity.RESULT_OK, mDate = calendar.getTime());
-            }
-        });
-        return v;
-
-    }
-
-    /*@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Date date = (Date) getArguments().getSerializable(ARG_DATE);
+        Date date = new Date();
+        if (getArguments() != null && getArguments().getSerializable(ARG_DATE) != null)
+            date = (Date) getArguments().getSerializable(ARG_DATE);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
+
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_date, null);
 
@@ -110,7 +75,7 @@ public class DatePickerFragment extends DialogFragment {
                     }
                 })
                 .create();
-    }*/
+    }
 
     private void sendResult(int resultCode, Date date) {
         if (getTargetFragment() == null)
@@ -121,14 +86,8 @@ public class DatePickerFragment extends DialogFragment {
 
         getTargetFragment()
                 .onActivityResult(getTargetRequestCode(), resultCode, intent);
-        getActivity().getSupportFragmentManager()
-                .beginTransaction().remove(this).commit();
-
-        //for full activity
-        /*Intent intent = new Intent();
-        intent.putExtra(EXTRA_DATE, date);
-
-        getActivity().setResult(resultCode, intent);
-        getActivity().finish();*/
+        if (getActivity() != null)
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction().remove(this).commit();
     }
 }

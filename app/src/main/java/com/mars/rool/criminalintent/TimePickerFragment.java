@@ -11,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TimePicker;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class TimePickerFragment extends DialogFragment {
 
@@ -26,7 +26,7 @@ public class TimePickerFragment extends DialogFragment {
 
     private TimePicker mTimePicker;
 
-    public static TimePickerFragment newInstance(Date date) {
+    static TimePickerFragment newInstance(Date date) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_TIME, date);
 
@@ -35,9 +35,12 @@ public class TimePickerFragment extends DialogFragment {
         return fragment;
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Date date = (Date) getArguments().getSerializable(ARG_TIME);
+        Date date = new Date();
+        if (getArguments() != null && getArguments().getSerializable(ARG_TIME) != null)
+            date = (Date) getArguments().getSerializable(ARG_TIME);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -94,5 +97,8 @@ public class TimePickerFragment extends DialogFragment {
 
         getTargetFragment()
                 .onActivityResult(getTargetRequestCode(), resultCode, intent);
+        if (getActivity() != null)
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction().remove(this).commit();
     }
 }

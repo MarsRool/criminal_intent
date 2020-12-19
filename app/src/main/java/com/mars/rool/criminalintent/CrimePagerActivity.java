@@ -37,7 +37,7 @@ public class CrimePagerActivity extends AppCompatActivity {
         return intent;
     }
 
-    public static int dpToPx(Context context,int dp) {
+    public static int dpToPx(Context context, int dp) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics);
     }
@@ -59,7 +59,7 @@ public class CrimePagerActivity extends AppCompatActivity {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-                Crime crime =  mCrimeLab.getCrime(position);
+                Crime crime = mCrimeLab.getCrime(position);
                 return CrimeFragment.newInstance(crime.getId());
             }
 
@@ -77,6 +77,7 @@ public class CrimePagerActivity extends AppCompatActivity {
         });
 
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+        assert crimeId != null;
         mViewPager.setCurrentItem(mCrimeLab.getCrimePosition(crimeId));
 
         mFirstCrimeImageButton.setOnClickListener(new View.OnClickListener() {

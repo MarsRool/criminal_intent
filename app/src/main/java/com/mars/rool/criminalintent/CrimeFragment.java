@@ -41,6 +41,15 @@ public class CrimeFragment extends Fragment {
 
     private Crime mCrime;
 
+    static CrimeFragment newInstance(UUID crimeId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARGS_CRIME_ID, crimeId);
+
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +57,14 @@ public class CrimeFragment extends Fragment {
         Log.d(CrimeListActivity.DEBUG_TAG, "CrimeFragment onCreate, args="+(args == null?"null":"not null"));
         if (args != null) {
             UUID crimeId = (UUID) args.getSerializable(ARGS_CRIME_ID);
+            assert crimeId != null;
             Log.d(CrimeListActivity.DEBUG_TAG, "CrimeFragment onCreate, id="+crimeId);
             mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+            assert mCrime != null;
             Log.d(CrimeListActivity.DEBUG_TAG, "CrimeFragment onCreate, mCrime="+(mCrime == null?"null":"not null"));
         } else {
             mCrime = new Crime();
-            Log.d(CrimeListActivity.DEBUG_TAG, "CrimeFragment onCreate, id=0, create new Crime()");
+            Log.d(CrimeListActivity.DEBUG_TAG, "CrimeFragment onCreate, id=?, create new Crime()");
         }
     }
 
@@ -86,8 +97,6 @@ public class CrimeFragment extends Fragment {
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = DateActivity.newIntent(getActivity(), mCrime.getDate());
-                startActivityForResult(intent, CrimeFragment.REQUEST_DATE);*/
                 FragmentManager fragmentManager = getFragmentManager();
                 DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
                 dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
@@ -154,14 +163,5 @@ public class CrimeFragment extends Fragment {
 
     public void returnResult() {
         getActivity().setResult(Activity.RESULT_OK, null);
-    }
-
-    static CrimeFragment newInstance(UUID crimeId) {
-        Bundle args = new Bundle();
-        args.putSerializable(ARGS_CRIME_ID, crimeId);
-
-        CrimeFragment fragment = new CrimeFragment();
-        fragment.setArguments(args);
-        return fragment;
     }
 }

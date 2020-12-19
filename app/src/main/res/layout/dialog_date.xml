@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<DatePicker
+    android:id="@+id/dialog_date_picker"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
     android:layout_width="wrap_content"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/date_picker_title"/>
-
-    <DatePicker
-        android:id="@+id/dialog_date_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/dialog_date_ok_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@android:string/ok"/>
-</LinearLayout>
+    android:layout_height="wrap_content"/>
