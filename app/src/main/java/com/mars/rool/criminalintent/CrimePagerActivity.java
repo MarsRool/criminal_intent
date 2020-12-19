@@ -33,7 +33,7 @@ public class CrimePagerActivity extends AppCompatActivity {
     public static Intent newIntent(Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, CrimePagerActivity.class);
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
-        Log.d(CrimeListActivity.DEBUG_TAG, "DateActivity newIntent, id="+crimeId);
+        Log.d(CrimeListActivity.DEBUG_TAG, "CrimeListActivity newIntent, id="+crimeId);
         return intent;
     }
 
