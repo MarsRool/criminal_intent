@@ -25,17 +25,14 @@ public class CrimeLab {
     private CrimeLab(Context context) {
         mCrimeMap = new TreeMap<>();
         mCrimeList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            Crime crime = new Crime();
-            crime.setTitle("Crime #"+i);
-            crime.setSolved(i % 2 == 0);
-            crime.setRequiredPolice(i % 2 == 1);
-            mCrimeMap.put(crime.getId(), crime);
-            mCrimeList.add(crime);
-        }
     }
 
     public int getSize() { return mCrimeList.size(); }
+
+    public void addCrime(Crime c) {
+        mCrimeMap.put(c.getId(), c);
+        mCrimeList.add(c);
+    }
 
     public Crime getCrime(UUID id) {
         return mCrimeMap.get(id);
