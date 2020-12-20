@@ -34,6 +34,7 @@ public class CrimeLab {
         mCrimeDbContext = new CrimeDbContext(context);
         mCrimeMap = new TreeMap<>();
         mCrimeList = new ArrayList<>();
+        initialize();
     }
 
     public int getSize() { return mCrimeList.size(); }
@@ -72,5 +73,13 @@ public class CrimeLab {
                 return i;
         }
         return -1;
+    }
+
+    private void initialize() {
+        List<Crime> crimes = mCrimeDbContext.getCrimes();
+        for (Crime crime : crimes) {
+            mCrimeMap.put(crime.getId(), crime);
+            mCrimeList.add(crime);
+        }
     }
 }
