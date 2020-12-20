@@ -25,12 +25,14 @@ import java.text.SimpleDateFormat;
 public class CrimeListFragment extends Fragment {
 
     private static final String SAVED_SUBTITLE_VISIBILITY = "subtitle";
+    private static final String SAVED_COUNT_CRIMES = "count_crimes";
 
     private static final int REQUEST_CRIME = 1;
 
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mCrimeAdapter;
     private boolean mCountVisible;
+    private int mCountCrimes = -1;
 
     private int mCurrentCrimeIndex;
 
@@ -41,6 +43,7 @@ public class CrimeListFragment extends Fragment {
 
         if (savedInstanceState != null) {
             mCountVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBILITY);
+            mCountCrimes = savedInstanceState.getInt(SAVED_COUNT_CRIMES);
         }
     }
 
@@ -69,23 +72,24 @@ public class CrimeListFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putBoolean(SAVED_SUBTITLE_VISIBILITY, mCountVisible);
+        savedInstanceState.putInt(SAVED_COUNT_CRIMES, mCountCrimes);
     }
 
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
 
-        if (mCrimeAdapter == null) {
+        if (mCrimeAdapter == null || mCountCrimes > crimeLab.getSize()) {
             mCrimeAdapter = new CrimeAdapter(crimeLab);
             mCrimeRecyclerView.setAdapter(mCrimeAdapter);
         } else {
             mCrimeAdapter.updateUI(mCurrentCrimeIndex);
         }
+        mCountCrimes = crimeLab.getSize();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CRIME && resultCode == FragmentActivity.RESULT_OK) {
-            //обработка результата
         }
     }
 
@@ -164,7 +168,7 @@ public class CrimeListFragment extends Fragment {
         }
 
         private void updateUI(int position) {
-            if (position == -1)
+            if (position == -1 || position >= getItemCount())
                 return;
             notifyItemChanged(position);
         }

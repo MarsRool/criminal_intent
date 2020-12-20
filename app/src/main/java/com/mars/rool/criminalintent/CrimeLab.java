@@ -34,6 +34,13 @@ public class CrimeLab {
         mCrimeList.add(c);
     }
 
+    public void deleteCrime(Crime c) {
+        if (c != null && mCrimeMap.containsKey(c.getId())) {
+            mCrimeMap.remove(c.getId());
+            mCrimeList.remove(c);
+        }
+    }
+
     public Crime getCrime(UUID id) {
         return mCrimeMap.get(id);
     }

@@ -7,6 +7,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -60,12 +64,12 @@ public class CrimeFragment extends Fragment {
             assert crimeId != null;
             Log.d(CrimeListActivity.DEBUG_TAG, "CrimeFragment onCreate, id="+crimeId);
             mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
-            assert mCrime != null;
             Log.d(CrimeListActivity.DEBUG_TAG, "CrimeFragment onCreate, mCrime="+(mCrime == null?"null":"not null"));
         } else {
             mCrime = new Crime();
             Log.d(CrimeListActivity.DEBUG_TAG, "CrimeFragment onCreate, id=?, create new Crime()");
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -148,6 +152,24 @@ public class CrimeFragment extends Fragment {
             Date date = (Date) intent.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
             mCrime.setDate(date);
             updateTime();
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_crime, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_crime:
+                CrimeLab.get(getActivity()).deleteCrime(mCrime);
+                getActivity().finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
