@@ -1,6 +1,13 @@
 package com.mars.rool.criminalintent;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.mars.rool.criminalintent.database.CrimeDatabaseHelper;
+import com.mars.rool.criminalintent.database.CrimeDbContext;
+import com.mars.rool.criminalintent.database.CrimeDbSchema;
+import com.mars.rool.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,8 +20,9 @@ public class CrimeLab {
 
     private static CrimeLab sCrimeLab;
 
-    private Map<UUID, Crime> mCrimeMap;
-    private List<Crime> mCrimeList;
+    private final Map<UUID, Crime> mCrimeMap;
+    private final List<Crime> mCrimeList;
+    private final CrimeDbContext mCrimeDbContext;
 
     public static CrimeLab get(Context context) {
         if (sCrimeLab == null)
@@ -23,6 +31,7 @@ public class CrimeLab {
     }
 
     private CrimeLab(Context context) {
+        mCrimeDbContext = new CrimeDbContext(context);
         mCrimeMap = new TreeMap<>();
         mCrimeList = new ArrayList<>();
     }
@@ -30,21 +39,33 @@ public class CrimeLab {
     public int getSize() { return mCrimeList.size(); }
 
     public void addCrime(Crime c) {
-        mCrimeMap.put(c.getId(), c);
-        mCrimeList.add(c);
+        if (c != null) {
+            mCrimeMap.put(c.getId(), c);
+            mCrimeList.add(c);
+            mCrimeDbContext.addCrime(c);
+        }
     }
 
     public void deleteCrime(Crime c) {
         if (c != null && mCrimeMap.containsKey(c.getId())) {
             mCrimeMap.remove(c.getId());
             mCrimeList.remove(c);
+            mCrimeDbContext.deleteCrime(c);
+        }
+    }
+
+    public void updateCrime(Crime c) {
+        if (c != null) {
+            mCrimeDbContext.updateCrime(c);
         }
     }
 
     public Crime getCrime(UUID id) {
         return mCrimeMap.get(id);
     }
-    public Crime getCrime(int position) {return mCrimeList.get(position); }
+    public Crime getCrime(int position) {
+        return mCrimeList.get(position);
+    }
     public int getCrimePosition(UUID id) {
         for (int i = 0; i < getSize(); i++) {
             if (mCrimeList.get(i).getId().equals(id))

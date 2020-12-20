@@ -11,9 +11,18 @@ public class Crime {
     private boolean mSolved;
     private boolean mRequiredPolice;
 
+    public Crime(UUID id, String title, Date date, boolean solved, boolean requiredPolice) {
+        mId = id;
+        mTitle = title;
+        mDate = date;
+        mSolved = solved;
+        mRequiredPolice = requiredPolice;
+    }
+    public Crime(UUID id) {
+        this(id, "", new Date(), false, false);
+    }
     public Crime() {
-        mId = UUID.randomUUID();
-        mDate = new Date();
+        this(UUID.randomUUID());
     }
 
     public UUID getId() { return mId; }
