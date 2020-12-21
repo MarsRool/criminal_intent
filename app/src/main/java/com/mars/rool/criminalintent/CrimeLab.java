@@ -1,16 +1,13 @@
 package com.mars.rool.criminalintent;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
-import com.mars.rool.criminalintent.database.CrimeDatabaseHelper;
 import com.mars.rool.criminalintent.database.CrimeDbContext;
-import com.mars.rool.criminalintent.database.CrimeDbSchema;
-import com.mars.rool.criminalintent.database.CrimeDbSchema.CrimeTable;
+import com.mars.rool.criminalintent.network.RemoteTask;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -80,6 +77,24 @@ public class CrimeLab {
         for (Crime crime : crimes) {
             mCrimeMap.put(crime.getId(), crime);
             mCrimeList.add(crime);
+        }
+
+        RemoteTask task = new RemoteTask(new RemoteUpdatedCallback());
+        task.execute("sdfsd", "ksdjhf");
+    }
+
+    private class RemoteUpdatedCallback implements RemoteTask.Callback {
+        @Override
+        public void callback(List<Crime> crimes) {
+            Log.d(CrimeListActivity.DEBUG_TAG, "CrimeLab initialize: crimesRemote.size == " + crimes.size());
+            for (Crime crime : crimes) {
+                Log.d(CrimeListActivity.DEBUG_TAG,
+                        "CrimeLab initialize:" + crime.getId()
+                + " " + crime.getTitle()
+                + " " + crime.getDate()
+                + (crime.isSolved() ? " solved" : " not solved")
+                + (crime.isRequiredPolice() ? " required" : " not required"));
+            }
         }
     }
 }
