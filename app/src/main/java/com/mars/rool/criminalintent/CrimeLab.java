@@ -4,12 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.mars.rool.criminalintent.database.CrimeDbContext;
-import com.mars.rool.criminalintent.network.JsonHelper;
+import com.mars.rool.criminalintent.model.Crime;
 import com.mars.rool.criminalintent.network.RemoteRepo;
 import com.mars.rool.criminalintent.network.RemoteTask;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;

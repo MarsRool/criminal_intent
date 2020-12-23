@@ -19,6 +19,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mars.rool.criminalintent.model.Crime;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 

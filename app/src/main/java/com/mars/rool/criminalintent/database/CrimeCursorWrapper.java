@@ -3,7 +3,7 @@ package com.mars.rool.criminalintent.database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.mars.rool.criminalintent.Crime;
+import com.mars.rool.criminalintent.model.Crime;
 import com.mars.rool.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 import java.util.Date;

@@ -21,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.mars.rool.criminalintent.model.Crime;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

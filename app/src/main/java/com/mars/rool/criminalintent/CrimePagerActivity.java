@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.mars.rool.criminalintent.model.Crime;
+
 import java.util.UUID;
 
 public class CrimePagerActivity extends AppCompatActivity {

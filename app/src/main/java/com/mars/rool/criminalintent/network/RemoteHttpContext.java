@@ -1,26 +1,14 @@
 package com.mars.rool.criminalintent.network;
 
-import android.net.Uri;
 import android.util.Log;
 
-import com.mars.rool.criminalintent.Crime;
 import com.mars.rool.criminalintent.CrimeListActivity;
-import com.mars.rool.criminalintent.database.CrimeDbSchema;
-import com.mars.rool.criminalintent.database.CrimeDbSchema.CrimeTable;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 public class RemoteHttpContext {
 

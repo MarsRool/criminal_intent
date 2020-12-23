@@ -6,9 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.mars.rool.criminalintent.Crime;
+import com.mars.rool.criminalintent.database.CrimeDbSchema.UserTable;
+import com.mars.rool.criminalintent.model.Crime;
 import com.mars.rool.criminalintent.CrimeListActivity;
 import com.mars.rool.criminalintent.database.CrimeDbSchema.CrimeTable;
+import com.mars.rool.criminalintent.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +82,25 @@ public class CrimeDbContext {
         }
     }
 
+    public User getAuthorizedUser() {
+        UserCursorWrapper cursorWrapper = queryUser();
+        try {
+            if (cursorWrapper.getCount() == 0) {
+                return null;
+            }
+            cursorWrapper.moveToFirst();
+            return cursorWrapper.getUser();
+        } finally {
+            cursorWrapper.close();
+        }
+    }
+
+    public boolean deleteAuthorizedUser() {
+        long result = mDatabase.delete(UserTable.NAME, null, null);
+        Log.d(CrimeListActivity.DEBUG_TAG, "deleteAuthorizedUser: result == " + result);
+        return result > 0;
+    }
+
     private static ContentValues getContentValues(Crime crime) {
         ContentValues values = new ContentValues();
         values.put(CrimeTable.Columns.UUID, crime.getId().toString());
@@ -102,5 +123,9 @@ public class CrimeDbContext {
                 null
         );
         return new CrimeCursorWrapper(cursor);
+    }
+
+    private UserCursorWrapper queryUser() {
+        return new UserCursorWrapper(mDatabase.query(UserTable.NAME, null, null, null, null, null, null));
     }
 }

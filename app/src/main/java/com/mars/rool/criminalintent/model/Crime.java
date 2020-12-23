@@ -1,4 +1,4 @@
-package com.mars.rool.criminalintent;
+package com.mars.rool.criminalintent.model;
 
 import java.util.Date;
 import java.util.UUID;

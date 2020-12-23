@@ -12,4 +12,12 @@ public class CrimeDbSchema {
             public static final String REQUIRE_POLICE = "require_police";
         }
     }
+    public static final class UserTable {
+        public static final String NAME = "user";
+
+        public static final class Columns {
+            public static final String EMAIL = "email";
+            public static final String PASSWORD = "password";
+        }
+    }
 }

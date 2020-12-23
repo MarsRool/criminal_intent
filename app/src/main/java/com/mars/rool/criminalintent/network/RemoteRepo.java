@@ -2,7 +2,7 @@ package com.mars.rool.criminalintent.network;
 
 import android.util.Log;
 
-import com.mars.rool.criminalintent.Crime;
+import com.mars.rool.criminalintent.model.Crime;
 import com.mars.rool.criminalintent.CrimeListActivity;
 
 import java.util.List;
