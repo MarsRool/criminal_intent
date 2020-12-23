@@ -48,7 +48,7 @@ public class RemoteRepo {
         Log.d(CrimeListActivity.DEBUG_TAG, "getCrimes url: " + url);
         String jsonString = mContext.getRemoteJsonResponce(url);
         Log.d(CrimeListActivity.DEBUG_TAG, "getCrimes JSON: " + jsonString);
-        return mContext.jsonToCrimeList(jsonString);
+        return JsonHelper.jsonToCrimeList(jsonString);
     }
 
     private Boolean registerUser(String email, String password) {
@@ -56,6 +56,6 @@ public class RemoteRepo {
         Log.d(CrimeListActivity.DEBUG_TAG, "registerUser url: " + url);
         String jsonString = mContext.getRemoteJsonResponce(url);
         Log.d(CrimeListActivity.DEBUG_TAG, "registerUser JSON: " + jsonString);
-        return mContext.jsonGetResult(jsonString);
+        return JsonHelper.jsonGetResult(jsonString);
     }
 }

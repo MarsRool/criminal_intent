@@ -33,38 +33,6 @@ public class RemoteHttpContext {
         return "";
     }
 
-    public boolean jsonGetResult(String jsonString) {
-        try {
-            JSONObject jsonObject = new JSONObject(jsonString);
-            return jsonObject.getBoolean("result");
-        } catch (JSONException ex) {
-            Log.e(CrimeListActivity.DEBUG_TAG, "Failed to parse JSON responce", ex);
-        }
-        return false;
-    }
-
-    public List<Crime> jsonToCrimeList(String jsonString) {
-        try {
-            List<Crime> crimes = new ArrayList<>();
-            JSONArray jsonArray = new JSONArray(jsonString);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonCrime = jsonArray.getJSONObject(i);
-                Crime crime = new Crime(
-                        UUID.fromString(jsonCrime.getString(CrimeTable.Columns.UUID)),
-                        jsonCrime.getString(CrimeTable.Columns.TITLE),
-                        new Date(jsonCrime.getLong(CrimeTable.Columns.DATE)),
-                        jsonCrime.getBoolean(CrimeTable.Columns.SOLVED),
-                        jsonCrime.getBoolean(CrimeTable.Columns.REQUIRE_POLICE)
-                );
-                crimes.add(crime);
-            }
-            return crimes;
-        } catch (JSONException ex) {
-            Log.e(CrimeListActivity.DEBUG_TAG, "Failed to parse JSON responce", ex);
-        }
-        return new ArrayList<>();
-    }
-
     private byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
