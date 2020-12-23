@@ -2,33 +2,17 @@ package com.mars.rool.criminalintent;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.mars.rool.criminalintent.model.Crime;
 import com.mars.rool.criminalintent.network.RemoteTask;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 public class LoginFragment extends Fragment {
 
@@ -45,6 +29,12 @@ public class LoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mCrimeLab = CrimeLab.get(getActivity());
         mCrimeLab.tryLogin(new LoginCallback());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mCrimeLab.uploadToRemote();
     }
 
     @Override
@@ -78,13 +68,14 @@ public class LoginFragment extends Fragment {
     }
 
     private void login() {
+        mCrimeLab.downloadFromRemote();
         Intent intent = CrimeListActivity.newIntent(getActivity());
         startActivity(intent);
     }
 
     private void register() {
-        //Intent intent = RegisterActivity.newIntent(getActivity());
-        //startActivity(intent);
+        Intent intent = RegisterActivity.newIntent(getActivity());
+        startActivity(intent);
     }
 
     private class LoginCallback implements RemoteTask.Callback<Boolean> {

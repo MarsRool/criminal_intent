@@ -24,6 +24,7 @@ public class CrimeLab {
     private final List<Crime> mCrimeList;
     private final CrimeDbContext mCrimeDbContext;
     private final RemoteRepo mRemoteRepo;
+    private RemoteTask.Callback<Void> mUpdateUICallback;
 
     public static CrimeLab get(Context context) {
         if (sCrimeLab == null)
@@ -37,6 +38,10 @@ public class CrimeLab {
         mCrimeMap = new TreeMap<>();
         mCrimeList = new ArrayList<>();
         initialize();
+    }
+
+    public void setUpdateUICallback(RemoteTask.Callback<Void> updateUICallback) {
+        mUpdateUICallback = updateUICallback;
     }
 
     public int getSize() { return mCrimeList.size(); }
@@ -84,6 +89,10 @@ public class CrimeLab {
         }
     }
 
+    public void tryRegister(String email, String password, RemoteTask.Callback<Boolean> callback) {
+        mRemoteRepo.requestRegister(email, password, callback);
+    }
+
     public Crime getCrime(UUID id) {
         return mCrimeMap.get(id);
     }
@@ -98,25 +107,29 @@ public class CrimeLab {
         return -1;
     }
 
+    public void downloadFromRemote() {
+        User user = mCrimeDbContext.getAuthorizedUser();
+        mRemoteRepo.requestCrimes(user.getEmail(), user.getPassword(PASSWORD_ACCESSOR), new GetCrimesCallback());
+    }
+
+    public void uploadToRemote() {
+        User user = mCrimeDbContext.getAuthorizedUser();
+        mRemoteRepo.requestSetCrimes(user.getEmail(), user.getPassword(PASSWORD_ACCESSOR), mCrimeList, new SetCrimesCallback());
+    }
+
     private void initialize() {
         List<Crime> crimes = mCrimeDbContext.getCrimes();
         for (Crime crime : crimes) {
             mCrimeMap.put(crime.getId(), crime);
             mCrimeList.add(crime);
         }
-
-        mRemoteRepo.requestCrimes("1","1", new GetCrimesCallback());
-        mRemoteRepo.requestRegister("1","1", new RegisterCallback());
-    }
-
-    private void setRemoteCrimes(List<Crime> crimes) {
-        mRemoteRepo.requestSetCrimes("1","1", crimes, new SetCrimesCallback());
     }
 
     private class GetCrimesCallback implements RemoteTask.Callback<List<Crime>> {
         @Override
         public void callback(List<Crime> crimes) {
             Log.d(CrimeListActivity.DEBUG_TAG, "CrimeLab GetCrimesCallback: crimesRemote.size == " + crimes.size());
+            mCrimeDbContext.deleteCrimes();
             for (Crime crime : crimes) {
                 Log.d(CrimeListActivity.DEBUG_TAG,
                         "CrimeLab initialize:" + crime.getId()
@@ -124,15 +137,10 @@ public class CrimeLab {
                 + " " + crime.getDate()
                 + (crime.isSolved() ? " solved" : " not solved")
                 + (crime.isRequiredPolice() ? " required" : " not required"));
+                mCrimeDbContext.addCrime(crime);
             }
-            setRemoteCrimes(crimes);
-        }
-    }
-
-    private class RegisterCallback implements RemoteTask.Callback<Boolean> {
-        @Override
-        public void callback(Boolean result) {
-            Log.d(CrimeListActivity.DEBUG_TAG, "CrimeLab RegisterCallback: result == " + (result ? "true" : "false"));
+            if (mUpdateUICallback != null)
+                mUpdateUICallback.callback(null);
         }
     }
 

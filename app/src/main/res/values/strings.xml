@@ -20,6 +20,8 @@
     <string name="password_label">Enter Password</string>
     <string name="password_confirm_label">Enter Password again</string>
     <string name="wrong_data_label">Entered data is incorrect</string>
+    <string name="user_already_exists_label">User already exists</string>
+    <string name="passwords_not_equal_label">Entered passwords are not equal</string>
     <string name="submit_button">Submit</string>
     <string name="login_title">Login</string>
     <string name="register_title">Register</string>

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mars.rool.criminalintent.model.Crime;
+import com.mars.rool.criminalintent.network.RemoteTask;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -47,6 +48,12 @@ public class CrimeListFragment extends Fragment {
             mCountVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBILITY);
             mCountCrimes = savedInstanceState.getInt(SAVED_COUNT_CRIMES);
         }
+        CrimeLab.get(getActivity()).setUpdateUICallback(new RemoteTask.Callback<Void>() {
+            @Override
+            public void callback(Void result) {
+                updateUI();
+            }
+        });
     }
 
     @Override

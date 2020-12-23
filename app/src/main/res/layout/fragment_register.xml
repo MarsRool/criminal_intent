@@ -10,83 +10,105 @@
     android:paddingBottom="8dp">
 
     <TextView
-        android:id="@+id/login_title"
+        android:id="@+id/register_title"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="256dp"
         android:gravity="center_vertical|center_horizontal|center"
-        android:text="@string/login_title"
+        android:text="@string/register_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/login_email_label"
+        android:id="@+id/register_email_label"
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/email_label"
-        app:layout_constraintTop_toBottomOf="@+id/login_title"
+        app:layout_constraintTop_toBottomOf="@+id/register_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/login_email"
+        android:id="@+id/register_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|center_horizontal|center"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@+id/login_email_label"
+        app:layout_constraintTop_toBottomOf="@+id/register_email_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/login_password_label"
+        android:id="@+id/register_password_label"
         android:layout_marginTop="32dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/password_label"
-        app:layout_constraintTop_toBottomOf="@+id/login_email"
+        app:layout_constraintTop_toBottomOf="@+id/register_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/login_password"
+        android:id="@+id/register_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|center_horizontal|center"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/login_password_label"
+        app:layout_constraintTop_toBottomOf="@+id/register_password_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/wrong_data_label"
+        android:id="@+id/register_password_confirm_label"
+        android:layout_marginTop="32dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/wrong_data_label"
+        android:text="@string/password_confirm_label"
+        app:layout_constraintTop_toBottomOf="@+id/register_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/register_password_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/register_password_confirm_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/passwords_not_equal_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/passwords_not_equal_label"
         android:textColor="#B80F40"
-        app:layout_constraintTop_toBottomOf="@+id/login_password"
+        app:layout_constraintTop_toBottomOf="@+id/register_password_confirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/user_already_exists_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/user_already_exists_label"
+        android:textColor="#B80F40"
+        app:layout_constraintTop_toBottomOf="@+id/passwords_not_equal_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/login_submit"
+        android:id="@+id/register_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit_button"
-        app:layout_constraintTop_toBottomOf="@+id/wrong_data_label"
+        app:layout_constraintTop_toBottomOf="@+id/user_already_exists_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/register_redirect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/register_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

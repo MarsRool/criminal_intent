@@ -39,6 +39,12 @@ public class CrimeDbContext {
         return result > 0;
     }
 
+    public boolean deleteCrimes() {
+        long result = mDatabase.delete(CrimeTable.NAME, null, null);
+        Log.d(CrimeListActivity.DEBUG_TAG, "deleteCrimes: result == " + result);
+        return result > 0;
+    }
+
     public void updateCrime(Crime c) {
         String uuidString = c.getId().toString();
         ContentValues values = getCrimeContentValues(c);
