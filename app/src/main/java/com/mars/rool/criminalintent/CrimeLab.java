@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.mars.rool.criminalintent.database.CrimeDbContext;
+import com.mars.rool.criminalintent.network.RemoteRepo;
 import com.mars.rool.criminalintent.network.RemoteTask;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class CrimeLab {
     private final Map<UUID, Crime> mCrimeMap;
     private final List<Crime> mCrimeList;
     private final CrimeDbContext mCrimeDbContext;
+    private final RemoteRepo mRemoteRepo;
 
     public static CrimeLab get(Context context) {
         if (sCrimeLab == null)
@@ -31,6 +33,7 @@ public class CrimeLab {
         mCrimeDbContext = new CrimeDbContext(context);
         mCrimeMap = new TreeMap<>();
         mCrimeList = new ArrayList<>();
+        mRemoteRepo = new RemoteRepo();
         initialize();
     }
 
@@ -79,14 +82,14 @@ public class CrimeLab {
             mCrimeList.add(crime);
         }
 
-        RemoteTask task = new RemoteTask(new RemoteUpdatedCallback());
-        task.execute("sdfsd", "ksdjhf");
+        mRemoteRepo.requestCrimes("1","1", new GetCrimesCallback());
+        mRemoteRepo.requestRegister("1","1", new RegisterCallback());
     }
 
-    private class RemoteUpdatedCallback implements RemoteTask.Callback {
+    private class GetCrimesCallback implements RemoteTask.Callback<List<Crime>> {
         @Override
         public void callback(List<Crime> crimes) {
-            Log.d(CrimeListActivity.DEBUG_TAG, "CrimeLab initialize: crimesRemote.size == " + crimes.size());
+            Log.d(CrimeListActivity.DEBUG_TAG, "CrimeLab GetCrimesCallback: crimesRemote.size == " + crimes.size());
             for (Crime crime : crimes) {
                 Log.d(CrimeListActivity.DEBUG_TAG,
                         "CrimeLab initialize:" + crime.getId()
@@ -95,6 +98,13 @@ public class CrimeLab {
                 + (crime.isSolved() ? " solved" : " not solved")
                 + (crime.isRequiredPolice() ? " required" : " not required"));
             }
+        }
+    }
+
+    private class RegisterCallback implements RemoteTask.Callback<Boolean> {
+        @Override
+        public void callback(Boolean result) {
+            Log.d(CrimeListActivity.DEBUG_TAG, "CrimeLab RegisterCallback: result == " + (result ? "true" : "false"));
         }
     }
 }
