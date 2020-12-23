@@ -22,7 +22,7 @@ public class JsonHelper {
             JSONObject jsonObject = new JSONObject(jsonString);
             return jsonObject.getBoolean("result");
         } catch (JSONException ex) {
-            Log.e(CrimeListActivity.DEBUG_TAG, "Failed to parse JSON responce", ex);
+            Log.e(CrimeListActivity.DEBUG_TAG, "Failed to parse JSON", ex);
         }
         return false;
     }
@@ -44,8 +44,27 @@ public class JsonHelper {
             }
             return crimes;
         } catch (JSONException ex) {
-            Log.e(CrimeListActivity.DEBUG_TAG, "Failed to parse JSON responce", ex);
+            Log.e(CrimeListActivity.DEBUG_TAG, "Failed to parse JSON", ex);
         }
         return new ArrayList<>();
+    }
+
+    public static String crimeListToJson(List<Crime> crimes) {
+        try {
+            JSONArray jsonArray = new JSONArray();
+            for (Crime crime : crimes) {
+                JSONObject crimeJsonObj = new JSONObject();
+                crimeJsonObj.put(CrimeDbSchema.CrimeTable.Columns.UUID, crime.getId().toString());
+                crimeJsonObj.put(CrimeDbSchema.CrimeTable.Columns.TITLE, crime.getTitle());
+                crimeJsonObj.put(CrimeDbSchema.CrimeTable.Columns.DATE, crime.getDate().getTime());
+                crimeJsonObj.put(CrimeDbSchema.CrimeTable.Columns.SOLVED, crime.isSolved());
+                crimeJsonObj.put(CrimeDbSchema.CrimeTable.Columns.REQUIRE_POLICE, crime.isRequiredPolice());
+                jsonArray.put(crimeJsonObj);
+            }
+            return jsonArray.toString();
+        } catch (JSONException ex) {
+            Log.e(CrimeListActivity.DEBUG_TAG, "Failed to create JSON", ex);
+        }
+        return "[]";
     }
 }

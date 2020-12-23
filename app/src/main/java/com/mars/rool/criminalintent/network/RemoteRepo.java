@@ -43,6 +43,22 @@ public class RemoteRepo {
         }
     }
 
+    public void requestSetCrimes(String email, String password, List<Crime> crimes, RemoteTask.Callback<Boolean> callback) {
+        try {
+            String crimesJsonString = JsonHelper.crimeListToJson(crimes);
+            Log.d(CrimeListActivity.DEBUG_TAG, "setCrimes crimesJsonString: " + crimesJsonString);
+            RemoteTask<Boolean> task = new RemoteTask<Boolean>(callback) {
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    return setCrimes(params[0], params[1], params[2]);
+                }
+            };
+            task.execute(email, password, crimesJsonString);
+        } catch (Exception ex) {
+            Log.e(CrimeListActivity.DEBUG_TAG, "Failed to request crimes", ex);
+        }
+    }
+
     private List<Crime> getCrimes(String email, String password) {
         String url = REMOVE_ADDRESS + "/crimes?email=" + email + "&password=" + password;
         Log.d(CrimeListActivity.DEBUG_TAG, "getCrimes url: " + url);
@@ -56,6 +72,14 @@ public class RemoteRepo {
         Log.d(CrimeListActivity.DEBUG_TAG, "registerUser url: " + url);
         String jsonString = mContext.getRemoteJsonResponce(url);
         Log.d(CrimeListActivity.DEBUG_TAG, "registerUser JSON: " + jsonString);
+        return JsonHelper.jsonGetResult(jsonString);
+    }
+
+    private Boolean setCrimes(String email, String password, String crimesJsonString) {
+        String url = REMOVE_ADDRESS + "/set_crimes?email=" + email + "&password=" + password + "&crimes=" + crimesJsonString;
+        Log.d(CrimeListActivity.DEBUG_TAG, "setCrimes url: " + url);
+        String jsonString = mContext.getRemoteJsonResponce(url);
+        Log.d(CrimeListActivity.DEBUG_TAG, "setCrimes JSON: " + jsonString);
         return JsonHelper.jsonGetResult(jsonString);
     }
 }

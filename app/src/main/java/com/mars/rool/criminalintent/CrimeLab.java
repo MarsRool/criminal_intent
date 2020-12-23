@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.mars.rool.criminalintent.database.CrimeDbContext;
+import com.mars.rool.criminalintent.network.JsonHelper;
 import com.mars.rool.criminalintent.network.RemoteRepo;
 import com.mars.rool.criminalintent.network.RemoteTask;
 
@@ -86,6 +87,10 @@ public class CrimeLab {
         mRemoteRepo.requestRegister("1","1", new RegisterCallback());
     }
 
+    private void setRemoteCrimes(List<Crime> crimes) {
+        mRemoteRepo.requestSetCrimes("1","1", crimes, new SetCrimesCallback());
+    }
+
     private class GetCrimesCallback implements RemoteTask.Callback<List<Crime>> {
         @Override
         public void callback(List<Crime> crimes) {
@@ -98,6 +103,7 @@ public class CrimeLab {
                 + (crime.isSolved() ? " solved" : " not solved")
                 + (crime.isRequiredPolice() ? " required" : " not required"));
             }
+            setRemoteCrimes(crimes);
         }
     }
 
@@ -105,6 +111,13 @@ public class CrimeLab {
         @Override
         public void callback(Boolean result) {
             Log.d(CrimeListActivity.DEBUG_TAG, "CrimeLab RegisterCallback: result == " + (result ? "true" : "false"));
+        }
+    }
+
+    private class SetCrimesCallback implements RemoteTask.Callback<Boolean> {
+        @Override
+        public void callback(Boolean result) {
+            Log.d(CrimeListActivity.DEBUG_TAG, "CrimeLab SetCrimesCallback: result == " + (result ? "true" : "false"));
         }
     }
 }
