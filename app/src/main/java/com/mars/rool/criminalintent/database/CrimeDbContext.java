@@ -26,7 +26,7 @@ public class CrimeDbContext {
     }
 
     public void addCrime(Crime c) {
-        ContentValues values = getContentValues(c);
+        ContentValues values = getCrimeContentValues(c);
         long result = mDatabase.insert(CrimeTable.NAME, null, values);
         Log.d(CrimeListActivity.DEBUG_TAG, "addCrime: result == " + result);
     }
@@ -41,7 +41,7 @@ public class CrimeDbContext {
 
     public void updateCrime(Crime c) {
         String uuidString = c.getId().toString();
-        ContentValues values = getContentValues(c);
+        ContentValues values = getCrimeContentValues(c);
         long result = mDatabase.update(CrimeTable.NAME, values,
                 CrimeTable.Columns.UUID + " = ?",
                 new String[] { uuidString });
@@ -94,20 +94,31 @@ public class CrimeDbContext {
             cursorWrapper.close();
         }
     }
-
+    public void saveAuthorizedUser(String email, String password) {
+        ContentValues values = getUserContentValues(email, password);
+        long result = mDatabase.insert(UserTable.NAME, null, values);
+        Log.d(CrimeListActivity.DEBUG_TAG, "saveAuthorizedUser: result == " + result);
+    }
     public boolean deleteAuthorizedUser() {
         long result = mDatabase.delete(UserTable.NAME, null, null);
         Log.d(CrimeListActivity.DEBUG_TAG, "deleteAuthorizedUser: result == " + result);
         return result > 0;
     }
 
-    private static ContentValues getContentValues(Crime crime) {
+    private static ContentValues getCrimeContentValues(Crime crime) {
         ContentValues values = new ContentValues();
         values.put(CrimeTable.Columns.UUID, crime.getId().toString());
         values.put(CrimeTable.Columns.TITLE, crime.getTitle());
         values.put(CrimeTable.Columns.DATE, crime.getDate().getTime());
         values.put(CrimeTable.Columns.SOLVED, crime.isSolved() ? 1 : 0);
         values.put(CrimeTable.Columns.REQUIRE_POLICE, crime.isRequiredPolice() ? 1 : 0);
+        return values;
+    }
+
+    private static ContentValues getUserContentValues(String email, String password) {
+        ContentValues values = new ContentValues();
+        values.put(UserTable.Columns.EMAIL, email);
+        values.put(UserTable.Columns.PASSWORD, password);
         return values;
     }
 

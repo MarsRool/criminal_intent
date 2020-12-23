@@ -2,12 +2,9 @@ package com.mars.rool.criminalintent;
 
 import androidx.fragment.app.Fragment;
 
-public class CrimeListActivity extends SingleFragmentActivity {
-
-    public static final String DEBUG_TAG = "DEBUG_TAG";
-
+public class LoginActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
-        return new CrimeListFragment();
+        return new LoginFragment();
     }
 }

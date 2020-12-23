@@ -16,4 +16,11 @@
     <string name="show_subtitle">Show Subtitle</string>
     <string name="hide_subtitle">Hide Subtitle</string>
     <string name="subtitle_format">%1$d crimes</string>
+    <string name="email_label">Enter Email</string>
+    <string name="password_label">Enter Password</string>
+    <string name="password_confirm_label">Enter Password again</string>
+    <string name="wrong_data_label">Entered data is incorrect</string>
+    <string name="submit_button">Submit</string>
+    <string name="login_title">Login</string>
+    <string name="register_title">Register</string>
 </resources>

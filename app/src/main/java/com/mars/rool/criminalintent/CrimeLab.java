@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.mars.rool.criminalintent.database.CrimeDbContext;
 import com.mars.rool.criminalintent.model.Crime;
+import com.mars.rool.criminalintent.model.User;
 import com.mars.rool.criminalintent.network.RemoteRepo;
 import com.mars.rool.criminalintent.network.RemoteTask;
 
@@ -15,6 +16,7 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 public class CrimeLab {
+    private static final String PASSWORD_ACCESSOR = "js2o3$4d-i46=fh@hks№ad[an@ao_d45u:ig#qw25kdhj32vas";
 
     private static CrimeLab sCrimeLab;
 
@@ -31,9 +33,9 @@ public class CrimeLab {
 
     private CrimeLab(Context context) {
         mCrimeDbContext = new CrimeDbContext(context);
+        mRemoteRepo = new RemoteRepo();
         mCrimeMap = new TreeMap<>();
         mCrimeList = new ArrayList<>();
-        mRemoteRepo = new RemoteRepo();
         initialize();
     }
 
@@ -58,6 +60,27 @@ public class CrimeLab {
     public void updateCrime(Crime c) {
         if (c != null) {
             mCrimeDbContext.updateCrime(c);
+        }
+    }
+
+    public void tryLogin(String email, String password, RemoteTask.Callback<Boolean> callback) {
+        mRemoteRepo.requestLogin(email, password, callback);
+    }
+    public void tryLogin(RemoteTask.Callback<Boolean> callback) {
+        User user = mCrimeDbContext.getAuthorizedUser();
+        if (user == null)
+            callback.callback(false);
+        else
+            tryLogin(user.getEmail(), user.getPassword(PASSWORD_ACCESSOR), callback);
+    }
+    public void saveAuthorizedUser(String email, String password) {
+        mCrimeDbContext.saveAuthorizedUser(email, password);
+    }
+    public void clearAuthorizedUser() {
+        User user = mCrimeDbContext.getAuthorizedUser();
+        if (user != null)
+        {
+            mCrimeDbContext.deleteAuthorizedUser();
         }
     }
 
